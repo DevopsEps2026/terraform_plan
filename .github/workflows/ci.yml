@@ -1,4 +1,5 @@
-name: Terraform CI
+```yaml
+name: Terraform Plan
 
 on:
   push:
@@ -9,39 +10,33 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-
 jobs:
   terraform:
-    name: Terraform Init and Plan
+    name: Terraform
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: terraform_plan
-
     steps:
-      # Checkout repository
-      - name: Checkout Code
+      # 1. Checkout source code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Install Terraform
+      # 2. Install Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Terraform Format Check
-      - name: Terraform Format
-        run: terraform fmt -check
+      # 3. Check Terraform formatting
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
 
-      # Terraform Init
+      # 4. Initialize Terraform
       - name: Terraform Init
         run: terraform init
 
-      # Terraform Validate
+      # 5. Validate Terraform code
       - name: Terraform Validate
         run: terraform validate
 
-      # Terraform Plan
+      # 6. Create Terraform Plan
       - name: Terraform Plan
         run: terraform plan
+```
